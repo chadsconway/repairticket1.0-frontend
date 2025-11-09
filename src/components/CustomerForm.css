@@ -1,0 +1,46 @@
+/* Styles for CustomerForm: stack every field on its own line and limit width */
+.customer-form {
+  max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden; /* ensure child backgrounds respect the rounded corners */
+}
+
+/* Ensure rows stack vertically regardless of bootstrap column layout */
+.customer-form .row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.customer-form .col-md-6 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.customer-form .form-control,
+.customer-form textarea.form-control {
+  width: 100%;
+}
+
+.customer-form .d-flex.gap-2 {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+/* Visual styling: yellow background for the form area and black labels
+   Do not change input box appearance (borders, background) here. */
+.customer-form .card-body {
+  background: yellow;
+}
+
+.customer-form .form-label,
+.customer-form label {
+  color: black;
+}
+
+/* Heading color for the form title */
+.customer-form h2 {
+  color: black;
+}

@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import * as BS from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ReactIcons from "./components/react-icons.jsx";
+import CustomerForm from "./components/CustomerForm.jsx";
+import RepairTicketForm from "./components/RepairTicketForm.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [theme, setTheme] = useState("light");
+
+  // Apply theme to body element
+  useEffect(() => {
+    document.body.setAttribute("data-bs-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BS.Container className="py-4">
+      <BS.Row className="mb-4">
+        <BS.Col className="d-flex justify-content-between align-items-center">
+          <h1>Heading 1 😎</h1>
+          <BS.Button
+            variant={theme === "light" ? "dark" : "light"}
+            onClick={toggleTheme}
+          >
+            {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+          </BS.Button>
+        </BS.Col>
+      </BS.Row>
+      <BS.Button variant="primary">Bootstrap Button</BS.Button>
+      <ReactIcons theme={theme} />
+      <CustomerForm
+        onSubmit={(data) => console.log("Customer submitted:", data)}
+      />
+      <RepairTicketForm
+        onSubmit={(data) => console.log("Repair ticket submitted:", data)}
+      />
+    </BS.Container>
+  );
+};
 
-export default App
+export default App;
