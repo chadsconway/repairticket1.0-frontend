@@ -1,0 +1,20 @@
+.ndc-form-row {
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+/* Horizontal layout for labor fields */
+.labor-fields-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.labor-description-field {
+  flex: 3;
+}
+
+.labor-time-field {
+  flex: 1;
+}

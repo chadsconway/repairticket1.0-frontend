@@ -18,7 +18,6 @@ const RepairTicketForm = ({ onSubmit }) => {
     model: "",
     serial_number: "",
     issue_description: "",
-    status: "open",
     date_created: today,
   });
 
@@ -141,21 +140,6 @@ const RepairTicketForm = ({ onSubmit }) => {
             </BS.Col>
 
             <BS.Col md={6} className="mb-3">
-              <BS.Form.Group controlId="status">
-                <BS.Form.Label>Status</BS.Form.Label>
-                <BS.Form.Select
-                  name="status"
-                  value={form.status}
-                  onChange={handleChange}
-                >
-                  <option value="open">Open</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="closed">Closed</option>
-                </BS.Form.Select>
-              </BS.Form.Group>
-            </BS.Col>
-
-            <BS.Col md={6} className="mb-3">
               <BS.Form.Group controlId="date_created">
                 <BS.Form.Label>Date Created</BS.Form.Label>
                 <BS.Form.Control
@@ -183,7 +167,6 @@ const RepairTicketForm = ({ onSubmit }) => {
                   model: "",
                   serial_number: "",
                   issue_description: "",
-                  status: "open",
                   date_created: today,
                 })
               }

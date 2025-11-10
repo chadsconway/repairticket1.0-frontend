@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactIcons from "./components/react-icons.jsx";
 import CustomerForm from "./components/CustomerForm.jsx";
 import RepairTicketForm from "./components/RepairTicketForm.jsx";
+import UpdateRepairTicketForm from "./components/UpdateRepairTicketForm.jsx";
+import "./components/UpdateRepairTicketForm.css";
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -37,6 +39,13 @@ const App = () => {
       />
       <RepairTicketForm
         onSubmit={(data) => console.log("Repair ticket submitted:", data)}
+      />
+      <UpdateRepairTicketForm
+        onSubmit={(data) => console.log("Update submitted:", data)}
+        onPartsEntry={(data) => console.log("Entering parts:", data)}
+        onEstimateGenerate={(data) => console.log("Generating estimate:", data)}
+        onFinalTicket={(data) => console.log("Creating final ticket:", data)}
+        onDoneUpdate={(data) => console.log("Done updating ticket:", data)}
       />
     </BS.Container>
   );
