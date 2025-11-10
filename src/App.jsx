@@ -40,6 +40,7 @@ const App = () => {
       <RepairTicketForm
         onSubmit={(data) => console.log("Repair ticket submitted:", data)}
       />
+
       <UpdateRepairTicketForm
         onSubmit={(data) => console.log("Update submitted:", data)}
         onPartsEntry={(data) => console.log("Entering parts:", data)}
