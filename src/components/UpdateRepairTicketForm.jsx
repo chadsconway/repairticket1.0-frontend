@@ -379,6 +379,17 @@ const UpdateRepairTicketForm = ({
             </div>
           </div>
         </BS.Form>
+        {/*         AddPartForm component usage
+        <AddPartForm
+          part_description={form.part_description}
+          part_number={form.part_number}
+          vendor={form.vendor}
+          price={form.price}
+          retail_price={form.retail_price}
+          handlePartInputChange={handlePartInputChange}
+          handleAddPart={handleAddPart}
+          clearPartFields={clearPartFields}
+        /> */}
       </BS.Card.Body>
     </BS.Card>
   );
