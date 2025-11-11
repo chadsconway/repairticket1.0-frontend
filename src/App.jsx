@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ReactIcons from "./components/react-icons.jsx";
 import CustomerForm from "./components/CustomerForm.jsx";
 import RepairTicketForm from "./components/RepairTicketForm.jsx";
-import UpdateRepairTicketForm from "./components/UpdateRepairTicketForm.jsx";
-import "./components/UpdateRepairTicketForm.css";
+import RepairTicketUpdateForm from "./components/RepairTicketUpdateForm.jsx";
+import "./components/RepairTicketUpdateForm.css";
 
 const App = () => {
   const [theme, setTheme] = useState("light");
@@ -23,7 +23,7 @@ const App = () => {
     <BS.Container className="py-4">
       <BS.Row className="mb-4">
         <BS.Col className="d-flex justify-content-between align-items-center">
-          <h1>Heading 1 😎</h1>
+          <h1>TLHW Repair Shop</h1>
           <BS.Button
             variant={theme === "light" ? "dark" : "light"}
             onClick={toggleTheme}
@@ -32,8 +32,7 @@ const App = () => {
           </BS.Button>
         </BS.Col>
       </BS.Row>
-      <BS.Button variant="primary">Bootstrap Button</BS.Button>
-      <ReactIcons theme={theme} />
+
       <CustomerForm
         onSubmit={(data) => console.log("Customer submitted:", data)}
       />
@@ -41,7 +40,7 @@ const App = () => {
         onSubmit={(data) => console.log("Repair ticket submitted:", data)}
       />
 
-      <UpdateRepairTicketForm
+      <RepairTicketUpdateForm
         onSubmit={(data) => console.log("Update submitted:", data)}
         onPartsEntry={(data) => console.log("Entering parts:", data)}
         onEstimateGenerate={(data) => console.log("Generating estimate:", data)}

@@ -20,6 +20,7 @@ const CustomerForm = ({ onSubmit }) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +58,16 @@ const CustomerForm = ({ onSubmit }) => {
   return (
     <BS.Card className="mb-4 customer-form">
       <BS.Card.Body>
-        <h2 className="mb-3">Create Customer</h2>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h2 className="mb-0">Create Customer</h2>
+          <BS.Button
+            variant="outline-secondary"
+            size="sm"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? "Hide" : "Show"}
+          </BS.Button>
+        </div>
         <BS.Form onSubmit={handleSubmit}>
           <BS.Row>
             <BS.Col md={12} className="mb-3">
@@ -76,81 +86,89 @@ const CustomerForm = ({ onSubmit }) => {
               </BS.Form.Group>
             </BS.Col>
 
-            <BS.Col md={12} className="mb-3">
-              <BS.Form.Group controlId="phone">
-                <BS.Form.Label>Phone</BS.Form.Label>
-                <BS.Form.Control
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  isInvalid={!!errors.phone}
-                  placeholder="Phone number"
-                />
-                <BS.Form.Control.Feedback type="invalid">
-                  {errors.phone}
-                </BS.Form.Control.Feedback>
-              </BS.Form.Group>
-            </BS.Col>
+            {isOpen && (
+              <>
+                <BS.Col md={12} className="mb-3">
+                  <BS.Form.Group controlId="phone">
+                    <BS.Form.Label>Phone</BS.Form.Label>
+                    <BS.Form.Control
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                      isInvalid={!!errors.phone}
+                      placeholder="Phone number"
+                    />
+                    <BS.Form.Control.Feedback type="invalid">
+                      {errors.phone}
+                    </BS.Form.Control.Feedback>
+                  </BS.Form.Group>
+                </BS.Col>
+              </>
+            )}
           </BS.Row>
 
-          <BS.Row>
-            <BS.Col md={12} className="mb-3">
-              <BS.Form.Group controlId="email">
-                <BS.Form.Label>Email</BS.Form.Label>
+          {isOpen && (
+            <>
+              <BS.Row>
+                <BS.Col md={12} className="mb-3">
+                  <BS.Form.Group controlId="email">
+                    <BS.Form.Label>Email</BS.Form.Label>
+                    <BS.Form.Control
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      isInvalid={!!errors.email}
+                      placeholder="name@example.com"
+                    />
+                    <BS.Form.Control.Feedback type="invalid">
+                      {errors.email}
+                    </BS.Form.Control.Feedback>
+                  </BS.Form.Group>
+                </BS.Col>
+
+                {/* keep date_created in the form data but hide the input from the UI */}
                 <BS.Form.Control
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  isInvalid={!!errors.email}
-                  placeholder="name@example.com"
+                  type="hidden"
+                  name="date_created"
+                  value={form.date_created}
                 />
-                <BS.Form.Control.Feedback type="invalid">
-                  {errors.email}
-                </BS.Form.Control.Feedback>
+              </BS.Row>
+
+              <BS.Form.Group controlId="address" className="mb-3">
+                <BS.Form.Label>Address</BS.Form.Label>
+                <BS.Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                  placeholder="Street, City, State, ZIP"
+                />
               </BS.Form.Group>
-            </BS.Col>
 
-            {/* keep date_created in the form data but hide the input from the UI */}
-            <BS.Form.Control
-              type="hidden"
-              name="date_created"
-              value={form.date_created}
-            />
-          </BS.Row>
-
-          <BS.Form.Group controlId="address" className="mb-3">
-            <BS.Form.Label>Address</BS.Form.Label>
-            <BS.Form.Control
-              as="textarea"
-              rows={3}
-              name="address"
-              value={form.address}
-              onChange={handleChange}
-              placeholder="Street, City, State, ZIP"
-            />
-          </BS.Form.Group>
-
-          <div className="d-flex gap-2">
-            <BS.Button type="submit" variant="primary">
-              Save Customer
-            </BS.Button>
-            <BS.Button
-              type="button"
-              variant="secondary"
-              onClick={() =>
-                setForm({
-                  name: "",
-                  phone: "",
-                  email: "",
-                  address: "",
-                  date_created: today,
-                })
-              }
-            >
-              Reset
-            </BS.Button>
-          </div>
+              <div className="d-flex gap-2">
+                <BS.Button type="submit" variant="primary">
+                  Save Customer
+                </BS.Button>
+                <BS.Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() =>
+                    setForm({
+                      name: "",
+                      phone: "",
+                      email: "",
+                      address: "",
+                      date_created: today,
+                    })
+                  }
+                >
+                  Reset
+                </BS.Button>
+              </div>
+            </>
+          )}
         </BS.Form>
       </BS.Card.Body>
     </BS.Card>
