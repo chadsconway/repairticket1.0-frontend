@@ -22,6 +22,10 @@
 }
 
 .labor-time-field {
+  /* width: 100px; */
+  flex: 0 0 auto;
+}
+.labor-total-field {
   width: 100px;
   flex: 0 0 auto;
 }
@@ -34,6 +38,18 @@
   align-items: center;
   justify-content: center;
   background-color: var(--bs-primary);
+  border: none;
+  color: white;
+}
+
+.labor-clear-btn {
+  height: 38px; /* Standard Bootstrap input height */
+  margin-top: 32px; /* Match the spacing to align with input - accounts for label height */
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bs-danger);
   border: none;
   color: white;
 }
@@ -62,7 +78,7 @@
 /* Horizontal layout for labor fields */
 .labor-fields-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .labor-description-field {
@@ -70,6 +86,9 @@
 }
 
 .labor-time-field {
+  flex: 1;
+}
+.labor-total-field {
   flex: 1;
 }
 

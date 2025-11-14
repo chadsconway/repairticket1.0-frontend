@@ -6,7 +6,7 @@ import CustomerForm from "./components/CustomerForm.jsx";
 import RepairTicketForm from "./components/RepairTicketForm.jsx";
 import RepairTicketUpdateForm from "./components/RepairTicketUpdateForm.jsx";
 import "./components/RepairTicketUpdateForm.css";
-
+import LaborForm from "./components/LaborForm.jsx";
 const App = () => {
   const [theme, setTheme] = useState("light");
 
