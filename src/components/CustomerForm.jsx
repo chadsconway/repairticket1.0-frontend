@@ -1,177 +1,178 @@
-import React, { useState } from "react";
-import * as BS from "react-bootstrap";
-import "./CustomerForm.css";
+import { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Column from "react-bootstrap/Col";
+import Stack from "react-bootstrap/Stack";
+import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
+import "../FormStyles.css";
 
-/**
- * CustomerForm
- * Fields: name, phone, email, address, date_created
- * Props:
- *  - onSubmit (optional) receives the form object when submitted
- */
-const CustomerForm = ({ onSubmit }) => {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+const CustomerForm = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [unitNumber, setUnitNumber] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [custID, setCustID] = useState("");
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    date_created: today,
-  });
-
-  const [errors, setErrors] = useState({});
-  const [isOpen, setIsOpen] = useState(true);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  // ***** Phone number formatting helper *****
+  const formatPhoneNumber = (input) => {
+    // Remove all non-digit characters
+    const cleaned = input.replace(/\D/g, "");
+    // Apply formatting for 10-digit US phone numbers (e.g., XXX-XXX-XXXX)
+    if (cleaned.length > 6) {
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(
+        6,
+        10
+      )}`;
+    } else if (cleaned.length > 3) {
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}`;
+    }
+    return cleaned;
   };
 
-  const validate = () => {
-    const err = {};
-    if (!form.name.trim()) err.name = "Name is required";
-    if (!form.email.trim()) err.email = "Email is required";
-    // basic email pattern
-    if (form.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
-      err.email = "Enter a valid email";
-    if (!form.phone.trim()) err.phone = "Phone is required";
-    return err;
+  const IDGenerator = (lname) => {
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const day = new Date().getDate();
+    const first3 = lname.trim().slice(0, 3).toUpperCase();
+    const custID = `${first3}${month}${day}${year}`;
+    setIsVisible(true);
+    return custID;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const err = validate();
-    setErrors(err);
-    if (Object.keys(err).length > 0) return;
-
-    // call optional callback or log to console
-    if (typeof onSubmit === "function") {
-      onSubmit(form);
-    } else {
-      // fallback: log the collected data
-      // In a real app you'd send this to an API
-      // eslint-disable-next-line no-console
-      console.log("CustomerForm submit:", form);
-    }
+    const generatedID = IDGenerator(lastName);
+    setCustID(generatedID);
+    console.log("Customer ID: ", generatedID);
+    // Further submission logic can be added here
+    const customerData = {
+      firstName,
+      lastName,
+      phone,
+      streetAddress,
+      unitNumber,
+      city,
+      state,
+      zipCode,
+      custID: generatedID,
+    };
+    console.log("Customer Data Submitted: ", customerData);
   };
 
   return (
-    <BS.Card className="mb-4 customer-form">
-      <BS.Card.Body>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h2 className="mb-0">Create Customer</h2>
-          <BS.Button
-            variant="outline-secondary"
-            size="sm"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? "Hide" : "Show"}
-          </BS.Button>
+    <Row className="bg bg-primary bg-white">
+      {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
+      {/* <div className="col-4"></div> */}
+
+      <div className="col-4 ndc-form-wrapper p-4">
+        <row>
+          <div className="col-6">
+            <h2>Customer</h2>
+          </div>
+          <div className="col-6">
+            <h3 className={isVisible ? "visible" : "invisible"}>
+              <span className="badge text-bg-secondary">ID: {custID}</span>
+            </h3>
+          </div>
+        </row>
+        {/* <Stack> */}
+        <div className="row">
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="pt-2" controlId="firstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                className=""
+                value={firstName}
+                type="text"
+                placeholder="Enter first name"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="pt-2" controlId="lastName">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                className=""
+                value={lastName}
+                type="text"
+                placeholder="Enter last name"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="pt-2" controlId="phone">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                className=""
+                value={phone}
+                type="tel"
+                placeholder="Enter phone number"
+                onChange={(e) => {
+                  const formattedPhone = formatPhoneNumber(e.target.value);
+                  console.log("Formatted Phone: ", formattedPhone);
+                  setPhone(formattedPhone);
+                }}
+              />
+            </Form.Group>
+            <Form.Group className="pt-2" controlId="streetAddress">
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                className=""
+                value={streetAddress}
+                type="text"
+                placeholder="Enter street address"
+                onChange={(e) => setStreetAddress(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group className="pt-2" controlId="unitNumber">
+              <Form.Control
+                className=""
+                value={unitNumber}
+                type="text"
+                placeholder="Enter unit number"
+                onChange={(e) => setUnitNumber(e.target.value)}
+              />
+            </Form.Group>
+
+            <InputGroup className="pt-2 pb-2">
+              <Form.Control
+                aria-label="City"
+                placeholder="City"
+                value={city}
+                type="text"
+                onChange={(e) => setCity(e.target.value)}
+              />
+
+              <Form.Control
+                aria-label="State"
+                placeholder="State"
+                value={state}
+                type="text"
+                onChange={(e) => setState(e.target.value)}
+              />
+
+              <Form.Control
+                aria-label="Zip Code"
+                placeholder="Zip Code"
+                value={zipCode}
+                type="text"
+                onChange={(e) => setZipCode(e.target.value)}
+              />
+            </InputGroup>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
         </div>
-        <BS.Form onSubmit={handleSubmit}>
-          <BS.Row>
-            <BS.Col md={12} className="mb-3">
-              <BS.Form.Group controlId="name">
-                <BS.Form.Label>Name</BS.Form.Label>
-                <BS.Form.Control
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  isInvalid={!!errors.name}
-                  placeholder="Full name"
-                />
-                <BS.Form.Control.Feedback type="invalid">
-                  {errors.name}
-                </BS.Form.Control.Feedback>
-              </BS.Form.Group>
-            </BS.Col>
-
-            {isOpen && (
-              <>
-                <BS.Col md={12} className="mb-3">
-                  <BS.Form.Group controlId="phone">
-                    <BS.Form.Label>Phone</BS.Form.Label>
-                    <BS.Form.Control
-                      name="phone"
-                      value={form.phone}
-                      onChange={handleChange}
-                      isInvalid={!!errors.phone}
-                      placeholder="Phone number"
-                    />
-                    <BS.Form.Control.Feedback type="invalid">
-                      {errors.phone}
-                    </BS.Form.Control.Feedback>
-                  </BS.Form.Group>
-                </BS.Col>
-              </>
-            )}
-          </BS.Row>
-
-          {isOpen && (
-            <>
-              <BS.Row>
-                <BS.Col md={12} className="mb-3">
-                  <BS.Form.Group controlId="email">
-                    <BS.Form.Label>Email</BS.Form.Label>
-                    <BS.Form.Control
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      isInvalid={!!errors.email}
-                      placeholder="name@example.com"
-                    />
-                    <BS.Form.Control.Feedback type="invalid">
-                      {errors.email}
-                    </BS.Form.Control.Feedback>
-                  </BS.Form.Group>
-                </BS.Col>
-
-                {/* keep date_created in the form data but hide the input from the UI */}
-                <BS.Form.Control
-                  type="hidden"
-                  name="date_created"
-                  value={form.date_created}
-                />
-              </BS.Row>
-
-              <BS.Form.Group controlId="address" className="mb-3">
-                <BS.Form.Label>Address</BS.Form.Label>
-                <BS.Form.Control
-                  as="textarea"
-                  rows={3}
-                  name="address"
-                  value={form.address}
-                  onChange={handleChange}
-                  placeholder="Street, City, State, ZIP"
-                />
-              </BS.Form.Group>
-
-              <div className="d-flex gap-2">
-                <BS.Button type="submit" variant="primary">
-                  Save Customer
-                </BS.Button>
-                <BS.Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() =>
-                    setForm({
-                      name: "",
-                      phone: "",
-                      email: "",
-                      address: "",
-                      date_created: today,
-                    })
-                  }
-                >
-                  Reset
-                </BS.Button>
-              </div>
-            </>
-          )}
-        </BS.Form>
-      </BS.Card.Body>
-    </BS.Card>
+        {/* </Stack> */}
+      </div>
+      {/* </Column> */}
+    </Row>
   );
 };
 
