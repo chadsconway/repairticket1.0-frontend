@@ -11,7 +11,6 @@ import "../FormStyles.css";
 const CustomerForm = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [unitNumber, setUnitNumber] = useState("");
@@ -36,22 +35,6 @@ const CustomerForm = () => {
     }
     return cleaned;
   };
-  //**************email validation *************** */
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) {
-      return "Email is required.";
-    } else if (!emailRegex.test(email)) {
-      return "Invalid email format.";
-    }
-    return ""; // No error
-  };
-
-  const handleEmailChange = (e) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-    setError(validateEmail(newEmail));
-  };
 
   const IDGenerator = (lname) => {
     const month = new Date().getMonth() + 1;
@@ -72,7 +55,6 @@ const CustomerForm = () => {
     const customerData = {
       firstName,
       lastName,
-      email,
       phone,
       streetAddress,
       unitNumber,
@@ -121,16 +103,6 @@ const CustomerForm = () => {
                 type="text"
                 placeholder="Enter last name"
                 onChange={(e) => setLastName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="pt-2" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                className=""
-                value={email}
-                type="text"
-                placeholder="Enter email"
-                onChange={(e) => handleEmailChange(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="pt-2" controlId="phone">
