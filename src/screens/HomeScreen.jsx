@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Column from "react-bootstrap/Col";
+import { Row, Col } from "react-bootstrap";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -65,10 +61,6 @@ const CustomerForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const generatedID = IDGenerator(lastName);
-    setCustID(generatedID);
-    console.log("Customer ID: ", generatedID);
-    // Further submission logic can be added here
     const customerData = {
       firstName,
       lastName,
@@ -79,9 +71,24 @@ const CustomerForm = () => {
       city,
       state,
       zipCode,
-      custID: generatedID,
+      custID,
     };
     console.log("Customer Data Submitted: ", customerData);
+    // Further processing can be done here, such as sending data to a server
+  };
+
+  const handleClearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setStreetAddress("");
+    setUnitNumber("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setIsVisible(false);
+    setCustID("");
   };
 
   return (
