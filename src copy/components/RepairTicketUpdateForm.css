@@ -1,0 +1,134 @@
+.ndc-form-row {
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.labor-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.labor-fields-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.labor-description-field {
+  flex: 2;
+}
+
+.labor-time-field {
+  /* width: 100px; */
+  flex: 0 0 auto;
+}
+.labor-total-field {
+  width: 100px;
+  flex: 0 0 auto;
+}
+
+.labor-add-btn {
+  height: 38px; /* Standard Bootstrap input height */
+  margin-top: 32px; /* Match the spacing to align with input - accounts for label height */
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bs-primary);
+  border: none;
+  color: white;
+}
+
+.labor-clear-btn {
+  height: 38px; /* Standard Bootstrap input height */
+  margin-top: 32px; /* Match the spacing to align with input - accounts for label height */
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bs-danger);
+  border: none;
+  color: white;
+}
+
+.labor-add-btn:hover {
+  background-color: var(--bs-primary-dark, #0a58ca);
+  border: none;
+  color: white;
+}
+
+.labor-add-btn svg {
+  color: white;
+}
+
+.labor-add-btn {
+  margin-bottom: 0.5rem;
+}
+
+/* Horizontal layout for labor container */
+.labor-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 1rem; */
+}
+
+/* Horizontal layout for labor fields */
+.labor-fields-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.labor-description-field {
+  flex: 3;
+}
+
+.labor-time-field {
+  flex: 1;
+}
+.labor-total-field {
+  flex: 1;
+}
+
+/* Parts form container styles */
+.parts-container {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.parts-fields-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.parts-fields-container-single {
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Make labor fields visually match the parts container */
+.labor-container {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Make labor fields visually match the parts container */
+.void-labor-fields-container {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+/* Title used for both Parts and Labor sections */
+.parts-fields-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
