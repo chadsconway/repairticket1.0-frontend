@@ -1,3 +1,9 @@
+#customer-form-row-wrapper {
+  display: inline-block;
+  background-color: yellow;
+  width: 50%;
+}
+
 /* Styles for forms: set width to 500px and style consistently */
 .customer-form {
   width: 1500px;
