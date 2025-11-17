@@ -72,7 +72,7 @@ const CustomerForm = () => {
       {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
       {/* <div className="col-4"></div> */}
 
-      <div className="col-4 ndc-form-wrapper p-4">
+      <div className="col-4-lg col-8-sm ndc-form-wrapper p-4">
         <Row>
           <div className="col-6">
             <h2>Customer</h2>

@@ -1,6 +1,6 @@
 /* Styles for forms: set width to 500px and style consistently */
 .customer-form {
-  width: 500px;
+  width: 1500px;
   max-width: 100%; /* for responsiveness on mobile */
   margin: 0 auto;
   border-radius: 20px;
