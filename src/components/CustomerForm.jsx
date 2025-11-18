@@ -137,7 +137,7 @@ const CustomerForm = () => {
   };
 
   return (
-    <Row id className="customer-form-row-wrappe">
+    <Row id className="customer-form-row-wrapper">
       {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
       {/* <div className="col-4"></div> */}
       <Column>
@@ -261,13 +261,6 @@ const CustomerForm = () => {
               </InputGroup>
               <Button variant="primary" type="submit">
                 Submit
-              </Button>
-              <Button
-                variant="secondary"
-                className="mt-3"
-                onClick={handleGetCustomers}
-              >
-                Get Customers
               </Button>
             </Form>
             <>
