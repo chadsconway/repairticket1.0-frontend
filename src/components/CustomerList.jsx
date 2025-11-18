@@ -13,6 +13,7 @@ import Col from "react-bootstrap/Col";
 import Column from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import Toast from "react-bootstrap/Toast";
+import { Button } from "react-bootstrap";
 
 const CustomerList = () => {
   const [options, setOptions] = useState([]);
@@ -127,6 +128,13 @@ const CustomerList = () => {
               </Dropdown.Item>
             ))}
           </DropdownButton>
+          <Button
+            variant="secondary"
+            className="mt-2"
+            onClick={() => handleShowCustomerForm()}
+          >
+            Add New Customer
+          </Button>
 
           {/* </Stack> */}
         </div>
