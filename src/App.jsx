@@ -3,6 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import CustomerForm from "./components/CustomerForm.jsx";
+import CustomerList from "./components/CustomerList.jsx";
 import BootstrapCustomerForm from "./components/BootstrapCustomerForm.jsx";
 import "./FormStyles.css";
 import RepairTicketForm from "./components/RepairTicketForm.jsx";
@@ -11,10 +12,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/CustomerForm.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
+      <CustomerList />
       <CustomerForm />
       {/* <BootstrapCustomerForm /> */}
       {/* <RepairTicketForm />

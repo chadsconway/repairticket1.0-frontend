@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// React Bootstrap Components
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,11 +7,16 @@ import Column from "react-bootstrap/Col";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
+import Toast from "react-bootstrap/Toast";
+import Modal from "react-bootstrap/Modal";
+// CSS
 import "../FormStyles.css";
 import "./CustomerForm.css";
 import axios from "axios";
 
 const backendURL = "http://192.168.0.187:5000/api/customers";
+
+const DEBUG_MODE = true;
 
 const CustomerForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -24,6 +30,13 @@ const CustomerForm = () => {
   const [zipCode, setZipCode] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [custID, setCustID] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseToast = () => setShowToast(false);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   // ***** Phone number formatting helper *****
   const formatPhoneNumber = (input) => {
@@ -51,32 +64,75 @@ const CustomerForm = () => {
     return custID;
   };
 
+  const handleClearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setStreetAddress("");
+    setUnitNumber("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setIsVisible(false);
+    setCustID("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const generatedID = IDGenerator(lastName);
     setCustID(generatedID);
-    console.log("Customer ID: ", generatedID);
+    if (DEBUG_MODE) {
+      console.log("Customer ID: ", generatedID);
+    }
     // Further submission logic can be added here
     const customerData = {
-      firstName,
-      lastName,
-      email,
-      phone,
-      streetAddress,
-      unitNumber,
-      city,
-      state,
-      zipCode,
-      custID: generatedID,
+      customer: {
+        firstName,
+        lastName,
+        email,
+        phone,
+        streetAddress,
+        unitNumber,
+        city,
+        state,
+        zipCode,
+        custID: generatedID,
+      },
+      repairTickets: [],
     };
-    console.log("Customer Data Submitted: ", customerData);
+    if (DEBUG_MODE) {
+      console.log("Customer Data Submitted: ", customerData);
+    }
     axios
       .post(backendURL, customerData)
       .then((response) => {
-        console.log("Customer created successfully:", response.data);
+        if (DEBUG_MODE) {
+          console.log("Customer created successfully:", response.data);
+        }
+        // setToastMessage("Customer created successfully!");
+        // setShowToast(true);
+        handleShowModal(true);
+        setTimeout(() => {
+          handleCloseModal();
+        }, 3000);
+        // handleClearForm();
       })
       .catch((error) => {
         console.error("There was an error creating the customer!", error);
+      });
+  };
+
+  const handleGetCustomers = () => {
+    axios
+      .get(backendURL)
+      .then((response) => {
+        if (DEBUG_MODE) {
+          console.log("Customers retrieved successfully:", response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error retrieving the customers!", error);
       });
   };
 
@@ -90,6 +146,16 @@ const CustomerForm = () => {
        ndc-form-wrapper p-4"
         >
           <Row id="customer-form-header-row">
+            {/* Modal------------------------ */}
+            <Modal show={showModal} onHide={handleCloseModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Customer {custID} Created</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {firstName} {lastName} has been successfully created!
+              </Modal.Body>
+            </Modal>
+            {/* End Modal ------------------- */}
             <div className="col-6">
               <h2>Customer</h2>
             </div>
@@ -141,7 +207,9 @@ const CustomerForm = () => {
                   placeholder="Enter phone number"
                   onChange={(e) => {
                     const formattedPhone = formatPhoneNumber(e.target.value);
-                    console.log("Formatted Phone: ", formattedPhone);
+                    if (DEBUG_MODE) {
+                      console.log("Formatted Phone: ", formattedPhone);
+                    }
                     setPhone(formattedPhone);
                   }}
                 />
@@ -194,7 +262,29 @@ const CustomerForm = () => {
               <Button variant="primary" type="submit">
                 Submit
               </Button>
+              <Button
+                variant="secondary"
+                className="mt-3"
+                onClick={handleGetCustomers}
+              >
+                Get Customers
+              </Button>
             </Form>
+            <>
+              <Toast
+                show={showToast}
+                onClose={handleCloseToast}
+                delay={3000}
+                autohide
+              >
+                <Toast.Header>
+                  <strong className="me-auto">Notification</strong>
+                </Toast.Header>
+                <Toast.Body className="bg-success text-white">
+                  {toastMessage}
+                </Toast.Body>
+              </Toast>
+            </>
           </div>
           {/* </Stack> */}
         </div>
