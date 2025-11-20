@@ -17,7 +17,7 @@ import Modal from "react-bootstrap/Modal";
 import Toast from "react-bootstrap/Toast";
 import { Button } from "react-bootstrap";
 
-const CustomerList = ({ addCustomerFormVisible }) => {
+const CustomerList = ({ addCustomerFormVisible, showExistingCustomer }) => {
   const [options, setOptions] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -96,6 +96,7 @@ const CustomerList = ({ addCustomerFormVisible }) => {
   const handleSelect = (customerId) => {
     console.log("Selected customer ID:", customerId);
     const customer = options.find((cust) => cust._id === customerId);
+    showExistingCustomer(customerId);
     setIsVisible(true);
     setSelectedCustomer(customer);
     setCustomerIsSelected(true);
