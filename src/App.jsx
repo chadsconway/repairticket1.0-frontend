@@ -12,6 +12,8 @@ import RepairTicketUpdateForm from "./components/RepairTicketUpdateForm.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/CustomerForm.css";
 
+const DEBUG_MODE = true;
+
 function App() {
   const [showCustomerForm, setShowCustomerForm] = useState(false);
   const [showExistingCustomer, setShowExistingCustomer] = useState(true);

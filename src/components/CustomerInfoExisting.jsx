@@ -31,6 +31,17 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
   const [zipCode, setZipCode] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [custID, setCustID] = useState("");
+  const [selectedCustomer, setSelectedCustomer] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    streetAddress: "",
+    unitNumber: "",
+    city: "",
+    state: "",
+    zipCode: "",
+  });
 
   useEffect(() => {
     if (ID) {
@@ -39,19 +50,58 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
         .get(`${CUSTOMER_API_URL}/${ID}`)
         .then((response) => {
           if (DEBUG_MODE) {
-            console.log("Fetched customer data:", response.data);
+            console.log(
+              "CustomerInfoExisting - fetched data: response.data.customer: ",
+              response.data.customer
+            );
+            console.log(
+              "CustomerInfoExisting - response.data.customer.firstName: ",
+              response.data.customer.firstName
+            );
           }
-          const existingCust = response.data;
-          setFirstName(existingCust.firstName || "");
-          setLastName(existingCust.lastName || "");
-          setEmail(existingCust.email || "");
-          setPhone(existingCust.phone || "");
-          setStreetAddress(existingCust.streetAddress || "");
-          setUnitNumber(existingCust.unitNumber || "");
-          setCity(existingCust.city || "");
-          setState(existingCust.state || "");
-          setZipCode(existingCust.zipCode || "");
-          setCustID(existingCust._id || "");
+          if (DEBUG_MODE) {
+            console.log("selectedCustomer:", selectedCustomer);
+            console.log;
+          }
+          const setupChange = (e) => {
+            const { name, value } = e.target;
+            setSelectedCustomer((prev) => ({
+              ...prev,
+              [name]: value,
+            }));
+          };
+
+          setupChange({
+            target: {
+              name: "firstName",
+              value: response?.data?.customer?.firstName,
+            },
+          });
+
+          // ((prevData) => ({
+          //   ...prevData,
+          //   customer: {
+          //     ...prevData.customer,
+          //     firstName: response?.data?.customer?.firstName,
+          //     lastName: response?.data?.customer?.lastName,
+          //     email: response?.data?.customer?.email,
+          //     phone: response?.data?.customer?.phone,
+          //     streetAddress: response?.data?.customer?.streetAddress,
+          //     unitNumber: response?.data?.customer?.unitNumber,
+          //     city: response?.data?.customer?.city,
+          //     state: response?.data?.customer?.state,
+          //     zipCode: response?.data?.customer?.zipCode,
+          //   },
+          //   _id: response.data._id,
+          //   repairTickets: response.data.repairTickets,
+          // }));
+          if (DEBUG_MODE) {
+            console.log(
+              "selectedCustomer?.customer?.firstName: ",
+              selectedCustomer?.firstName
+            );
+            console.log("firstName: ", { firstName });
+          }
         })
         .catch((error) => {
           console.error("Error fetching customer data:", error);
@@ -59,10 +109,20 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
     }
   }, [ID]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedCustomer((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
-    <div className={showExistingCustomer ? "visible" : "hidden"}>
-      Existing Customer Form
-    </div>
+    <>
+      <div className={showExistingCustomer ? "visible" : "hidden"}>
+        Existing Customer Form
+      </div>
+    </>
   );
 };
 
