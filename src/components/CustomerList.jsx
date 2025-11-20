@@ -7,6 +7,8 @@ import "../FormStyles.css";
 // import Customer from "./customer";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -15,14 +17,30 @@ import Modal from "react-bootstrap/Modal";
 import Toast from "react-bootstrap/Toast";
 import { Button } from "react-bootstrap";
 
-const CustomerList = () => {
+const CustomerList = ({ addCustomerFormVisible }) => {
   const [options, setOptions] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [monitorNewCustomerForm, setMonitorNewCustomerForm] =
+    useState("hidden");
   const [customerIsSelected, setCustomerIsSelected] = useState(false);
+  const [addCustomerButtonText, setAddCustomerButtonText] =
+    useState("Add New Customer");
+
+  const handleShowCustomerForm = () => {
+    if (monitorNewCustomerForm === "hidden") {
+      setMonitorNewCustomerForm("visible");
+      setAddCustomerButtonText("Close Customer Form");
+      addCustomerFormVisible(true);
+    } else {
+      setMonitorNewCustomerForm("hidden");
+      setAddCustomerButtonText("Add New Customer");
+      addCustomerFormVisible(false);
+    }
+  };
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -87,59 +105,45 @@ const CustomerList = () => {
   };
 
   return (
-    <Row id className="customer-form-row-wrapper">
-      {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
-      {/* <div className="col-4"></div> */}
-      <Column>
-        <div
-          className="col-4-lg col-8-sm
-       ndc-form-wrapper p-4"
-        >
-          <Row id="customer-form-header-row">
-            {/* Modal------------------------ */}
-
-            {/* End Modal ------------------- */}
-            <div className="col-6">
-              <h2>Customer</h2>
-            </div>
-            <div className="col-6">
-              <h3 className={isVisible ? "visible" : "invisible"}>
-                <span className="badge text-bg-secondary">
-                  ID: {selectedCustomer?.customer?.custID}
-                </span>
-              </h3>
-            </div>
-          </Row>
-          {/* <Stack> */}
-          <div className="row"></div>
-
-          <DropdownButton
-            variant="primary"
-            id="dropdown-basic-button"
-            title={"Select Customer"}
-          >
-            {options.map((customer) => (
-              <Dropdown.Item
-                variant="bg-secondary-text"
-                key={customer._id}
-                onClick={() => handleSelect(customer._id)}
-              >
-                {customer.customer.lastName}, {customer.customer.firstName}
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
-          <Button
-            variant="secondary"
-            className="mt-2"
-            onClick={() => handleShowCustomerForm()}
-          >
-            Add New Customer
-          </Button>
-
-          {/* </Stack> */}
+    <div as={Form} className="m-4 p-4 ndc-yellow rounded-5">
+      <Row>
+        <div className="col-md-6">
+          <h2>Customer</h2>
         </div>
-      </Column>
-    </Row>
+        <div className="col-md-6">
+          {/* <h3 className={isVisible ? "visible" : "invisible"}>
+            <span className="badge text-bg-secondary">
+              ID: {selectedCustomer?.customer?.custID}
+            </span>
+          </h3> */}
+        </div>
+
+        <Button
+          variant="secondary"
+          className="ms-2 mb-2 col-sm-6 col-md-4 col-lg-3"
+          onClick={() => handleShowCustomerForm()}
+        >
+          {addCustomerButtonText}
+        </Button>
+        <DropdownButton
+          as={Button}
+          className="ms-2 mb-2 col-sm-6 col-md-4 col-lg-3"
+          variant="primary"
+          id="dropdown-basic-button"
+          title={"Select Customer"}
+        >
+          {options.map((customer) => (
+            <Dropdown.Item
+              variant="bg-secondary-text"
+              key={customer._id}
+              onClick={() => handleSelect(customer._id)}
+            >
+              {customer.customer.lastName}, {customer.customer.firstName}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+      </Row>
+    </div>
   );
 };
 

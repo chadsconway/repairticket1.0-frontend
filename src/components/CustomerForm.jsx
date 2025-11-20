@@ -152,19 +152,18 @@ const CustomerForm = ({ showForm }) => {
       className="m-4 ndc-yellow p-4 rounded-5"
     >
       <Row>
-        <Row id="customer-form-header-row">
-          <div className="col-md-3">
-            <h2>Customer</h2>
-          </div>
-          <div className="col-md-9">
-            <h3
-              style={{ display: isVisible ? "inline-block" : "none" }}
-              className="position-relative float-end"
-            >
-              <span className="badge text-bg-secondary">ID: {custID}</span>
-            </h3>
-          </div>
-        </Row>
+        <div className="col-md-3">
+          <h2>Customer</h2>
+        </div>
+        <div className="col-md-9">
+          <h3
+            style={{ display: isVisible ? "inline-block" : "none" }}
+            className="position-relative float-end"
+          >
+            <span className="badge text-bg-secondary">ID: {custID}</span>
+          </h3>
+        </div>
+
         <Form.Group as={Column} md="6" className="pt-2" controlId="firstName">
           <Form.Label>First Name</Form.Label>
           <Form.Control
