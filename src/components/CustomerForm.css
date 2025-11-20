@@ -1,7 +1,5 @@
-#customer-form-row-wrapper {
-  display: inline-block;
+.ndc-yellow {
   background-color: yellow;
-  width: 50%;
 }
 
 /* Styles for forms: set width to 500px and style consistently */

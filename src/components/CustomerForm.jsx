@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 // React Bootstrap Components
 import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Column from "react-bootstrap/Col";
@@ -143,164 +144,174 @@ const CustomerForm = ({ showForm }) => {
   };
 
   return (
-    <Row
-      id
-      className="customer-form-row-wrapper "
+    <Form
+      noValidate
+      validated={validated}
+      onSubmit={handleSubmit}
       style={{ display: showForm ? "block" : "none" }}
+      className="m-4 ndc-yellow p-4 rounded-5"
     >
-      {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
-      {/* <div className="col-4"></div> */}
-      <Column>
-        <div
-          className="col-4-lg col-8-sm
-       ndc-form-wrapper p-4"
-        >
-          <Row id="customer-form-header-row">
-            {/* Modal------------------------ */}
-            <Modal show={showModal} onHide={handleCloseModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Customer {custID} Created</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {firstName} {lastName} has been successfully created!
-              </Modal.Body>
-            </Modal>
-            {/* End Modal ------------------- */}
-            <div className="col-6">
-              <h2>Customer</h2>
-            </div>
-            <div className="col-6">
-              <h3 className={isVisible ? "visible" : "invisible"}>
-                <span className="badge text-bg-secondary">ID: {custID}</span>
-              </h3>
-            </div>
-          </Row>
-          {/* <Stack> */}
-          <div className="row">
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group className="pt-2" controlId="firstName">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  required
-                  className=""
-                  value={firstName}
-                  type="text"
-                  placeholder="Enter first name"
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please enter a first name.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="pt-2" controlId="lastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  required
-                  className=""
-                  value={lastName}
-                  type="text"
-                  placeholder="Enter last name"
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please enter a last name.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="pt-2" controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  className=""
-                  value={email}
-                  type="email"
-                  placeholder="Enter email address"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="pt-2" controlId="phone">
-                <Form.Label>Phone</Form.Label>
-                <Form.Control
-                  className=""
-                  value={phone}
-                  type="tel"
-                  placeholder="Enter phone number"
-                  onChange={(e) => {
-                    const formattedPhone = formatPhoneNumber(e.target.value);
-                    if (DEBUG_MODE) {
-                      console.log("Formatted Phone: ", formattedPhone);
-                    }
-                    setPhone(formattedPhone);
-                  }}
-                />
-              </Form.Group>
-              <Form.Group className="pt-2" controlId="streetAddress">
-                <Form.Label>Address</Form.Label>
-                <Form.Control
-                  className=""
-                  value={streetAddress}
-                  type="text"
-                  placeholder="Enter street address"
-                  onChange={(e) => setStreetAddress(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="pt-2" controlId="unitNumber">
-                <Form.Control
-                  className=""
-                  value={unitNumber}
-                  type="text"
-                  placeholder="Enter unit number"
-                  onChange={(e) => setUnitNumber(e.target.value)}
-                />
-              </Form.Group>
-
-              <InputGroup className="pt-2 pb-2">
-                <Form.Control
-                  aria-label="City"
-                  placeholder="City"
-                  value={city}
-                  type="text"
-                  onChange={(e) => setCity(e.target.value)}
-                />
-
-                <Form.Control
-                  aria-label="State"
-                  placeholder="State"
-                  value={state}
-                  type="text"
-                  onChange={(e) => setState(e.target.value)}
-                />
-
-                <Form.Control
-                  aria-label="Zip Code"
-                  placeholder="Zip Code"
-                  value={zipCode}
-                  type="text"
-                  onChange={(e) => setZipCode(e.target.value)}
-                />
-              </InputGroup>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
-            <>
-              <Toast
-                show={showToast}
-                onClose={handleCloseToast}
-                delay={3000}
-                autohide
-              >
-                <Toast.Header>
-                  <strong className="me-auto">Notification</strong>
-                </Toast.Header>
-                <Toast.Body className="bg-success text-white">
-                  {toastMessage}
-                </Toast.Body>
-              </Toast>
-            </>
+      <Row>
+        <Row id="customer-form-header-row">
+          <div className="col-md-3">
+            <h2>Customer</h2>
           </div>
-          {/* </Stack> */}
-        </div>
-      </Column>
-    </Row>
+          <div className="col-md-9">
+            <h3
+              style={{ display: isVisible ? "inline-block" : "none" }}
+              className="position-relative float-end"
+            >
+              <span className="badge text-bg-secondary">ID: {custID}</span>
+            </h3>
+          </div>
+        </Row>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="firstName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            required
+            className=""
+            value={firstName}
+            type="text"
+            placeholder="Enter first name"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a first name.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="lastName">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            required
+            className=""
+            value={lastName}
+            type="text"
+            placeholder="Enter last name"
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a last name.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="email">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            className=""
+            value={email}
+            type="email"
+            placeholder="Enter email address"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="phone">
+          <Form.Label>Phone</Form.Label>
+          <Form.Control
+            className=""
+            value={phone}
+            type="tel"
+            placeholder="Enter phone number"
+            onChange={(e) => {
+              const formattedPhone = formatPhoneNumber(e.target.value);
+              if (DEBUG_MODE) {
+                console.log("Formatted Phone: ", formattedPhone);
+              }
+              setPhone(formattedPhone);
+            }}
+          />
+        </Form.Group>
+        <Form.Group
+          as={Column}
+          md="6"
+          className="pt-2"
+          controlId="streetAddress"
+        >
+          <Form.Label>Address</Form.Label>
+          <Form.Control
+            className=""
+            value={streetAddress}
+            type="text"
+            placeholder="Enter street address"
+            onChange={(e) => setStreetAddress(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="unitNumber">
+          <Form.Label>Unit #</Form.Label>
+          <Form.Control
+            className=""
+            value={unitNumber}
+            type="text"
+            placeholder="Enter unit number"
+            onChange={(e) => setUnitNumber(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="city">
+          <Form.Label>City</Form.Label>
+          <Form.Control
+            aria-label="City"
+            placeholder="City"
+            value={city}
+            type="text"
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="state">
+          <Form.Label>State</Form.Label>
+          <Form.Control
+            aria-label="State"
+            placeholder="State"
+            value={state}
+            type="text"
+            onChange={(e) => setState(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="zipCode">
+          <Form.Label>Zip Code</Form.Label>
+          <Form.Control
+            aria-label="Zip Code"
+            placeholder="Zip Code"
+            value={zipCode}
+            type="text"
+            onChange={(e) => setZipCode(e.target.value)}
+          />
+        </Form.Group>
+        <Button
+          className="mt-3 mx-auto col-md-4 col-sm-6"
+          variant="primary"
+          type="submit"
+        >
+          Submit
+        </Button>
+
+        <>
+          <Toast
+            show={showToast}
+            onClose={handleCloseToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Header>
+              <strong className="me-auto">Notification</strong>
+            </Toast.Header>
+            <Toast.Body className="bg-success text-white">
+              {toastMessage}
+            </Toast.Body>
+          </Toast>
+        </>
+      </Row>
+      {/* Modal------------------------ */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Customer {custID} Created</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {firstName} {lastName} has been successfully created!
+        </Modal.Body>
+      </Modal>
+      {/* End Modal ------------------- */}
+    </Form>
   );
 };
 
