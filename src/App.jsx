@@ -12,10 +12,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/CustomerForm.css";
 
 function App() {
+  const [showCustomerForm, setShowCustomerForm] = useState(true);
   return (
     <>
       <CustomerList />
-      <CustomerForm />
+      <CustomerForm showForm={showCustomerForm} />
       {/* <BootstrapCustomerForm /> */}
       {/* <RepairTicketForm />
       <RepairTicketUpdateForm /> */}

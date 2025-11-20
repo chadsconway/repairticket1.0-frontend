@@ -18,7 +18,7 @@ const backendURL = "http://192.168.0.187:5000/api/customers";
 
 const DEBUG_MODE = true;
 
-const CustomerForm = () => {
+const CustomerForm = ({ showForm }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,6 +37,7 @@ const CustomerForm = () => {
   const handleCloseToast = () => setShowToast(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const [validated, setValidated] = useState(false);
 
   // ***** Phone number formatting helper *****
   const formatPhoneNumber = (input) => {
@@ -79,7 +80,12 @@ const CustomerForm = () => {
   };
 
   const handleSubmit = (e) => {
+    const form = e.currentTarget;
+    setValidated(true);
     e.preventDefault();
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
     const generatedID = IDGenerator(lastName);
     setCustID(generatedID);
     if (DEBUG_MODE) {
@@ -137,7 +143,11 @@ const CustomerForm = () => {
   };
 
   return (
-    <Row id className="customer-form-row-wrapper">
+    <Row
+      id
+      className="customer-form-row-wrapper "
+      style={{ display: showForm ? "block" : "none" }}
+    >
       {/* <Column xs={10} sm={10} md={8} lg={6} xl={6} xxl={6}> */}
       {/* <div className="col-4"></div> */}
       <Column>
@@ -167,26 +177,34 @@ const CustomerForm = () => {
           </Row>
           {/* <Stack> */}
           <div className="row">
-            <Form onSubmit={handleSubmit}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group className="pt-2" controlId="firstName">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control
+                  required
                   className=""
                   value={firstName}
                   type="text"
                   placeholder="Enter first name"
                   onChange={(e) => setFirstName(e.target.value)}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a first name.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="pt-2" controlId="lastName">
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control
+                  required
                   className=""
                   value={lastName}
                   type="text"
                   placeholder="Enter last name"
                   onChange={(e) => setLastName(e.target.value)}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a last name.
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="pt-2" controlId="email">
                 <Form.Label>Email</Form.Label>
