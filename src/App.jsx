@@ -16,7 +16,7 @@ const DEBUG_MODE = true;
 
 function App() {
   const [showCustomerForm, setShowCustomerForm] = useState(false);
-  const [showExistingCustomer, setShowExistingCustomer] = useState(true);
+  const [showExistingCustomer, setShowExistingCustomer] = useState(false);
   const [ID, setID] = useState(null);
 
   const handleShowCustomerForm = () => {

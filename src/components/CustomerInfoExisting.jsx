@@ -42,6 +42,43 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
     state: "",
     zipCode: "",
   });
+  const [validated, setValidated] = useState(false);
+  const [isReadOnly, setIsReadOnly] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  // ***** Phone number formatting helper *****
+  const formatPhoneNumber = (input) => {
+    // Remove all non-digit characters
+    const cleaned = input.replace(/\D/g, "");
+    // Apply formatting for 10-digit US phone numbers (e.g., XXX-XXX-XXXX)
+    if (cleaned.length > 6) {
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(
+        6,
+        10
+      )}`;
+    } else if (cleaned.length > 3) {
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}`;
+    }
+    return cleaned;
+  };
+
+  const toggleReadOnly = () => {
+    setIsReadOnly(!isReadOnly); // Toggle the state
+    console.log("isReadOnly:", isReadOnly);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (DEBUG_MODE) {
+      console.log(`handleChange - name: ${name}, value: ${value}`);
+    }
+    setSelectedCustomer((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   useEffect(() => {
     if (ID) {
@@ -49,34 +86,22 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
       axios
         .get(`${CUSTOMER_API_URL}/${ID}`)
         .then((response) => {
+          console.log(`response.data: ${JSON.stringify(response.data)}`);
+          setFirstName(response.data.customer.firstName || "");
+          setLastName(response.data.customer.lastName || "");
+          setEmail(response.data.customer.email || "");
+          setPhone(response.data.customer.phone || "");
+          setStreetAddress(response.data.customer.streetAddress || "");
+          setUnitNumber(response.data.customer.unitNumber || "");
+          setCity(response.data.customer.city || "");
+          setState(response.data.customer.state || "");
+          setZipCode(response.data.customer.zipCode || "");
+          setCustID(response.data.customer.custID || "");
+          setSelectedCustomer(response.data.customer);
           if (DEBUG_MODE) {
-            console.log(
-              "CustomerInfoExisting - fetched data: response.data.customer: ",
-              response.data.customer
-            );
-            console.log(
-              "CustomerInfoExisting - response.data.customer.firstName: ",
-              response.data.customer.firstName
-            );
+            console.log("CustID: ", firstName);
           }
-          if (DEBUG_MODE) {
-            console.log("selectedCustomer:", selectedCustomer);
-            console.log;
-          }
-          const setupChange = (e) => {
-            const { name, value } = e.target;
-            setSelectedCustomer((prev) => ({
-              ...prev,
-              [name]: value,
-            }));
-          };
-
-          setupChange({
-            target: {
-              name: "firstName",
-              value: response?.data?.customer?.firstName,
-            },
-          });
+          // setSelectedCustomer((prevData) =>
 
           // ((prevData) => ({
           //   ...prevData,
@@ -109,20 +134,219 @@ const CustomerInfoExisting = ({ showExistingCustomer, ID }) => {
     }
   }, [ID]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedCustomer((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const handleSubmit = (e) => {
+    const form = e.currentTarget;
+    if (DEBUG_MODE) {
+      console.log("Submitting form with data:", form);
+    }
+    setValidated(true);
+    e.preventDefault();
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
+
+    // Further submission logic can be added here
+    const customerData = {
+      _id: ID,
+      customer: {
+        firstName,
+        lastName,
+        email,
+        phone,
+        streetAddress,
+        unitNumber,
+        city,
+        state,
+        zipCode,
+        custID,
+      },
+      repairTickets: [],
+    };
+    if (DEBUG_MODE) {
+      console.log("Customer Data Submitted: ", customerData);
+    }
+    axios
+      .put(`${CUSTOMER_API_URL}/${ID}`, customerData)
+      .then((response) => {
+        if (DEBUG_MODE) {
+          console.log("Customer updated successfully:", response.data);
+        }
+        // setToastMessage("Customer created successfully!");
+        // setShowToast(true);
+        handleShowModal(true);
+        setTimeout(() => {
+          handleCloseModal();
+        }, 3000);
+        // handleClearForm();
+      })
+      .catch((error) => {
+        console.error("There was an error creating the customer!", error);
+      });
   };
 
   return (
-    <>
-      <div className={showExistingCustomer ? "visible" : "hidden"}>
-        Existing Customer Form
-      </div>
-    </>
+    <Form
+      noValidate
+      validated={validated}
+      onSubmit={handleSubmit}
+      style={{ display: showExistingCustomer ? "block" : "none" }}
+      className="m-4 ndc-yellow p-4 rounded-5"
+    >
+      <Row>
+        <div className="col-md-3">
+          <h2>Customer</h2>
+        </div>
+        <div className="col-md-9">
+          <h3 className="position-relative float-end">
+            <span className="badge text-bg-secondary">ID: {custID}</span>
+          </h3>
+        </div>
+
+        <Form.Group as={Column} md="6" className="pt-2" controlId="firstName">
+          <Form.Label>First Name</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            required
+            className=""
+            value={firstName}
+            type="text"
+            placeholder="Enter first name"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a first name.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="lastName">
+          <Form.Label>Last Name</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            required
+            className=""
+            value={lastName}
+            type="text"
+            placeholder="Enter last name"
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter a last name.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="email">
+          <Form.Label>Email</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            className=""
+            value={email}
+            type="email"
+            placeholder="Enter email address"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="phone">
+          <Form.Label>Phone</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            className=""
+            value={phone}
+            type="tel"
+            placeholder="Enter phone number"
+            onChange={(e) => {
+              const formattedPhone = formatPhoneNumber(e.target.value);
+              if (DEBUG_MODE) {
+                console.log("Formatted Phone: ", formattedPhone);
+              }
+              setPhone(formattedPhone);
+            }}
+          />
+        </Form.Group>
+        <Form.Group
+          as={Column}
+          md="6"
+          className="pt-2"
+          controlId="streetAddress"
+        >
+          <Form.Label>Address</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            className=""
+            value={streetAddress}
+            type="text"
+            placeholder="Enter street address"
+            onChange={(e) => setStreetAddress(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group as={Column} md="6" className="pt-2" controlId="unitNumber">
+          <Form.Label>Unit #</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            className=""
+            value={unitNumber}
+            type="text"
+            placeholder="Enter unit number"
+            onChange={(e) => setUnitNumber(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="city">
+          <Form.Label>City</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            aria-label="City"
+            placeholder="City"
+            value={city}
+            type="text"
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="state">
+          <Form.Label>State</Form.Label>
+          <FormControl
+            readOnly={isReadOnly}
+            aria-label="State"
+            placeholder="State"
+            value={state}
+            type="text"
+            onChange={(e) => setState(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group as={Column} md="4" className="pt-2" controlId="zipCode">
+          <Form.Label>Zip Code</Form.Label>
+          <FormControl
+            readOnly
+            aria-label="Zip Code"
+            placeholder="Zip Code"
+            value={zipCode}
+            type="text"
+            onChange={(e) => setZipCode(e.target.value)}
+          />
+        </Form.Group>
+        <Button
+          className="mt-3 mx-auto col-md-4 col-sm-6"
+          variant="primary"
+          onClick={toggleReadOnly}
+        >
+          {isReadOnly ? "Edit Customer Info" : "Lock Customer Info"}
+        </Button>
+        <Button
+          className="mt-3 mx-auto col-md-4 col-sm-6"
+          variant="primary"
+          type="submit"
+        >
+          Save Updates
+        </Button>
+      </Row>
+      <Modal show={showModal}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Customer: {firstName} {lastName} updated!
+        </Modal.Body>
+      </Modal>
+    </Form>
   );
 };
 
